@@ -1,3 +1,5 @@
+![Pipeline Screenshot](./Greencheck.png)
+
 # Azure DevOps CI/CD Project
 
 ## Overview
