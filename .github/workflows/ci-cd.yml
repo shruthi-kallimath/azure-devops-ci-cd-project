@@ -5,14 +5,29 @@ on:
     branches: [ "main" ]
 
 jobs:
-  build:
+  test-and-build:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-    - name: Build Docker Image
-      run: docker build -t devops-app .
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
 
-    - name: Run Container
-      run: docker run -d -p 80:80 devops-app
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run automated tests
+        run: pytest
+
+      - name: Build Docker image
+        run: docker build -t devops-app .
+
+      - name: Run container
+        run: docker run -d -p 5000:80 --name devops-container devops-app
+
+      - name: Verify container is running
+        run: docker ps
